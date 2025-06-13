@@ -209,4 +209,13 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Support
 
-For support, please open an issue in the GitHub repository or contact the development team. 
+For support, please open an issue in the GitHub repository or contact the development team.
+
+## Updates
+
+### 2025-06-13
+- Added user management and authentication system.
+- Implemented registration, login, and user management endpoints.
+- Added tests for user service and controller.
+- Integrated Spring Security for role-based access control.
+- Updated frontend to support user management for admin users. 
