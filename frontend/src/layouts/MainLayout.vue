@@ -1,90 +1,109 @@
 <template>
-  <el-container class="layout-container">
-    <el-aside width="200px">
-      <div class="logo">
-        <h2>SimERP</h2>
+  <el-container class="layout-container" :class="{ 'dark': isDark }">
+    <el-aside :width="isCollapse ? '64px' : '200px'" class="aside">
+      <div class="logo" :class="{ 'is-collapse': isCollapse }">
+        <span v-if="!isCollapse">SimERP</span>
+        <el-icon v-else><Monitor /></el-icon>
       </div>
       <el-menu
         :router="true"
         :default-active="route.path"
         class="el-menu-vertical"
+        :collapse="isCollapse"
+        :collapse-transition="false"
+        background-color="#304156"
+        text-color="#bfcbd9"
+        active-text-color="#409EFF"
       >
         <el-menu-item index="/">
           <el-icon><DataLine /></el-icon>
-          <span>Dashboard</span>
+          <template #title>Dashboard</template>
         </el-menu-item>
         <el-menu-item index="/inventory">
           <el-icon><Box /></el-icon>
-          <span>Inventory</span>
+          <template #title>Inventory</template>
         </el-menu-item>
         <el-menu-item index="/sales">
-          <el-icon><ShoppingCart /></el-icon>
-          <span>Sales</span>
+          <el-icon><Sell /></el-icon>
+          <template #title>Sales</template>
         </el-menu-item>
         <el-menu-item index="/purchases">
-          <el-icon><ShoppingBag /></el-icon>
-          <span>Purchases</span>
+          <el-icon><ShoppingCart /></el-icon>
+          <template #title>Purchases</template>
         </el-menu-item>
         <el-menu-item index="/customers">
           <el-icon><User /></el-icon>
-          <span>Customers</span>
+          <template #title>Customers</template>
         </el-menu-item>
         <el-menu-item index="/suppliers">
-          <el-icon><OfficeBuilding /></el-icon>
-          <span>Suppliers</span>
+          <el-icon><Van /></el-icon>
+          <template #title>Suppliers</template>
         </el-menu-item>
       </el-menu>
     </el-aside>
-    
+
     <el-container>
-      <el-header>
-        <div class="header-content">
-          <h3>{{ currentPageTitle }}</h3>
-          <div class="user-menu">
-            <el-dropdown>
-              <span class="user-dropdown">
-                Admin User
-                <el-icon><ArrowDown /></el-icon>
-              </span>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item>Profile</el-dropdown-item>
-                  <el-dropdown-item>Settings</el-dropdown-item>
-                  <el-dropdown-item divided>Logout</el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-          </div>
+      <el-header class="header">
+        <div class="header-left">
+          <el-button
+            type="text"
+            @click="toggleCollapse"
+            class="collapse-btn"
+          >
+            <el-icon>
+              <component :is="isCollapse ? 'Expand' : 'Fold'" />
+            </el-icon>
+          </el-button>
+        </div>
+        <div class="header-right">
+          <ThemeSwitch />
+          <el-dropdown>
+            <span class="user-dropdown">
+              Admin
+              <el-icon><ArrowDown /></el-icon>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>Profile</el-dropdown-item>
+                <el-dropdown-item>Settings</el-dropdown-item>
+                <el-dropdown-item divided>Logout</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
         </div>
       </el-header>
-      
       <el-main>
-        <router-view></router-view>
+        <router-view />
       </el-main>
     </el-container>
   </el-container>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import ThemeSwitch from '@/components/ThemeSwitch.vue'
+import { useTheme } from '@/composables/useTheme'
 import {
+  Monitor,
   DataLine,
   Box,
+  Sell,
   ShoppingCart,
-  ShoppingBag,
   User,
-  OfficeBuilding,
+  Van,
+  Expand,
+  Fold,
   ArrowDown
 } from '@element-plus/icons-vue'
 
 const route = useRoute()
+const isCollapse = ref(false)
+const { isDark } = useTheme()
 
-const currentPageTitle = computed(() => {
-  const path = route.path
-  if (path === '/') return 'Dashboard'
-  return path.charAt(1).toUpperCase() + path.slice(2)
-})
+const toggleCollapse = () => {
+  isCollapse.value = !isCollapse.value
+}
 </script>
 
 <style scoped>
@@ -92,50 +111,116 @@ const currentPageTitle = computed(() => {
   height: 100vh;
 }
 
+.layout-container.dark {
+  background-color: #1a1a1a;
+  color: #e5eaf3;
+}
+
+.aside {
+  background-color: #304156;
+  transition: width 0.3s;
+}
+
 .logo {
   height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 1px solid #dcdfe6;
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  background-color: #2b3649;
 }
 
-.logo h2 {
-  margin: 0;
-  color: #409eff;
-}
-
-.el-aside {
-  background-color: #fff;
-  border-right: 1px solid #dcdfe6;
+.logo.is-collapse {
+  font-size: 0;
 }
 
 .el-menu-vertical {
   border-right: none;
 }
 
-.el-header {
-  background-color: #fff;
-  border-bottom: 1px solid #dcdfe6;
-  padding: 0 20px;
+.el-menu-vertical:not(.el-menu--collapse) {
+  width: 200px;
 }
 
-.header-content {
-  height: 60px;
+.header {
+  background-color: #fff;
+  border-bottom: 1px solid #e6e6e6;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 20px;
+}
+
+.dark .header {
+  background-color: #242424;
+  border-bottom-color: #363637;
+  color: #e5eaf3;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.collapse-btn {
+  font-size: 20px;
+  padding: 0;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .user-dropdown {
-  cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 8px;
+  cursor: pointer;
+  color: inherit;
+}
+
+.user-dropdown .el-icon {
+  margin-left: 5px;
 }
 
 .el-main {
-  background-color: #f5f7fa;
+  background-color: #f0f2f5;
   padding: 20px;
+}
+
+.dark .el-main {
+  background-color: #1a1a1a;
+  color: #e5eaf3;
+}
+
+/* Dark theme overrides */
+.dark .el-button {
+  color: #e5eaf3;
+}
+
+.dark .el-button:hover {
+  color: var(--el-color-primary);
+}
+
+.dark .el-dropdown-menu {
+  background-color: #242424;
+  border-color: #363637;
+}
+
+.dark .el-dropdown-menu__item {
+  color: #e5eaf3;
+}
+
+.dark .el-dropdown-menu__item:hover {
+  background-color: #363637;
+  color: #e5eaf3;
+}
+
+.dark .el-dropdown-menu__item:not(.is-disabled):hover {
+  background-color: #363637;
+  color: #e5eaf3;
 }
 </style> 

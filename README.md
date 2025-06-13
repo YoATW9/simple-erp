@@ -22,6 +22,14 @@ SimERP is a modern, full-stack enterprise resource planning system built with Sp
   - Contact information
   - Order history
 
+- **Modern UI Features**
+  - Dark/Light theme support
+  - Responsive layout
+  - Intuitive navigation
+  - Real-time data updates
+  - Interactive data tables
+  - Form validation
+
 ## Tech Stack
 
 ### Backend
@@ -38,6 +46,8 @@ SimERP is a modern, full-stack enterprise resource planning system built with Sp
 - Element Plus UI Framework
 - Axios for HTTP requests
 - Vite for build tooling
+- Vue Router for navigation
+- Pinia for state management
 
 ## Prerequisites
 
@@ -93,7 +103,27 @@ npm install
 npm run dev
 ```
 
-The frontend application will be available at `http://localhost:5173`.
+The frontend application will be available at `http://localhost:5173` or `http://localhost:5174` if 5173 is in use.
+
+## UI Features
+
+### Theme Support
+- Toggle between light and dark themes
+- Persistent theme preference
+- Smooth theme transitions
+- Consistent styling across components
+
+### Navigation
+- Collapsible sidebar
+- Responsive layout
+- Clear visual hierarchy
+- Intuitive menu structure
+
+### Data Display
+- Interactive tables with sorting and filtering
+- Real-time data updates
+- Form validation and error handling
+- Loading states and feedback
 
 ## API Documentation
 
@@ -143,6 +173,11 @@ simerp/
 └── frontend/
     ├── src/
     │   ├── components/
+    │   │   ├── ThemeSwitch.vue
+    │   │   └── ...
+    │   ├── composables/
+    │   │   ├── useTheme.ts
+    │   │   └── ...
     │   ├── views/
     │   ├── router/
     │   ├── store/
