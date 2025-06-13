@@ -1,6 +1,6 @@
 # SimERP - Simple Enterprise Resource Planning System
 
-SimERP is a modern, full-stack enterprise resource planning system built with Spring Boot and Vue.js. It provides essential business management features including inventory management, sales order processing, and customer management.
+SimERP is my testing project built with Spring Boot and Vue.js, provides essential business management features including inventory management, sales order processing, and customer management.
 
 ## Features
 
@@ -209,7 +209,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Support
 
-For support, please open an issue in the GitHub repository or contact the development team.
+No support, I will update when I want to do :)
 
 ## Updates
 
